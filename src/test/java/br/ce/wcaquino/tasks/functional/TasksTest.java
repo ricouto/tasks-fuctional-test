@@ -7,16 +7,26 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class TasksTest {
 	
 	public WebDriver acessarAplicacao(){
 		String pathDriver = System.getProperty("user.dir");
-		String pathChrome = "\\src\\test\\resources\\drivers\\chromedriver.exe";
+		String pathFF = "\\src\\test\\resources\\drivers\\geckodriver.exe";
+		
+		/*String pathChrome = "\\src\\test\\resources\\drivers\\chromedriver.exe";
 		//"src/test/resources/drivers/chromedriver.exe"
 		System.setProperty("webdriver.chrome.driver", pathDriver + pathChrome);
+		WebDriver driver = new ChromeDriver();*/
 		
-		WebDriver driver = new ChromeDriver();
+		System.setProperty("webdriver.gecko.driver", pathDriver + pathFF);
+		FirefoxOptions firefoxOptions = new FirefoxOptions();
+		firefoxOptions.setHeadless(false);
+		WebDriver driver = new FirefoxDriver(firefoxOptions);
+		
+		
 		driver.navigate().to("http://localhost:8001/tasks");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		return driver;
