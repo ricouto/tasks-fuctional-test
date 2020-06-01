@@ -19,13 +19,14 @@ public class TasksTest {
 	}
 	
 	@Test
-	public void deveSalvarTarefaComSucesso(){
+	public void deveSalvarTarefaComSucesso() throws InterruptedException{
 		WebDriver driver = acessarAplicacao();
 		try{
 		driver.findElement(By.id("addTodo")).click();
 		driver.findElement(By.id("task")).sendKeys("Teste via Selenium....");
 		driver.findElement(By.id("dueDate")).sendKeys("10/10/2025");
 		driver.findElement(By.id("saveButton")).click();
+		Thread.sleep(2000);
 		String msgValidacao = driver.findElement(By.id("message")).getText();
 		Assert.assertEquals("Success!", msgValidacao);
 		}finally{
@@ -34,12 +35,13 @@ public class TasksTest {
 	}
 	
 	@Test
-	public void naoDeveSalvarTarefaSemDescricao(){
+	public void naoDeveSalvarTarefaSemDescricao() throws InterruptedException{
 		WebDriver driver = acessarAplicacao();
 		try{
 		driver.findElement(By.id("addTodo")).click();
 		driver.findElement(By.id("dueDate")).sendKeys("10/10/2025");
 		driver.findElement(By.id("saveButton")).click();
+		Thread.sleep(2000);
 		String msgValidacao = driver.findElement(By.id("message")).getText();
 		Assert.assertEquals("Fill the task description", msgValidacao);
 		}finally{
@@ -48,12 +50,13 @@ public class TasksTest {
 	}
 	
 	@Test
-	public void naoDeveSalvarTarefaSemData(){
+	public void naoDeveSalvarTarefaSemData() throws InterruptedException{
 		WebDriver driver = acessarAplicacao();
 		try{
 		driver.findElement(By.id("addTodo")).click();
 		driver.findElement(By.id("task")).sendKeys("Teste via Selenium....");
 		driver.findElement(By.id("saveButton")).click();
+		Thread.sleep(2000);
 		String msgValidacao = driver.findElement(By.id("message")).getText();
 		Assert.assertEquals("Fill the due date", msgValidacao);
 		}finally{
@@ -62,13 +65,14 @@ public class TasksTest {
 	}
 	
 	@Test
-	public void naoDeveSalvarTarefaComDataPassada(){
+	public void naoDeveSalvarTarefaComDataPassada() throws InterruptedException{
 		WebDriver driver = acessarAplicacao();
 		try{
 		driver.findElement(By.id("addTodo")).click();
 		driver.findElement(By.id("task")).sendKeys("Teste via Selenium....");
 		driver.findElement(By.id("dueDate")).sendKeys("10/10/2000");
 		driver.findElement(By.id("saveButton")).click();
+		Thread.sleep(2000);
 		String msgValidacao = driver.findElement(By.id("message")).getText();
 		Assert.assertEquals("Due date must not be in past", msgValidacao);
 		}finally{
