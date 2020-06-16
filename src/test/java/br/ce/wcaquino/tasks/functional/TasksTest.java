@@ -1,18 +1,24 @@
 package br.ce.wcaquino.tasks.functional;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class TasksTest {
 	
-	public WebDriver acessarAplicacao(){
+	public WebDriver acessarAplicacao() throws MalformedURLException{
 		String pathDriver = System.getProperty("user.dir");
 		String pathFF = "\\src\\test\\resources\\drivers\\geckodriver.exe";
 		
@@ -22,18 +28,40 @@ public class TasksTest {
 		WebDriver driver = new ChromeDriver();*/
 		
 		System.setProperty("webdriver.gecko.driver", pathDriver + pathFF);
+		
+		/*DesiredCapabilities cap = DesiredCapabilities.firefox();
 		FirefoxOptions firefoxOptions = new FirefoxOptions();
-		firefoxOptions.setHeadless(false);
-		WebDriver driver = new FirefoxDriver(firefoxOptions);
+		firefoxOptions.setHeadless(true);
+		cap.merge(firefoxOptions);*/
 		
+		DesiredCapabilities cap=new DesiredCapabilities();
+		cap.setBrowserName("chrome");
+		cap.setPlatform(Platform.ANY);
+		ChromeOptions options = new ChromeOptions();
+		options.merge(cap);
+		options.setHeadless(true);
 		
-		driver.navigate().to("http://localhost:8001/tasks");
+		//Via local
+		//WebDriver driver = new RemoteWebDriver(new URL("http://192.168.15.6:4444/wd/hub"), cap/options);
+		
+		//Via Docker
+		WebDriver driver = new RemoteWebDriver(new URL("http://192.168.99.100:4444/wd/hub"), options);
+		
+		//firefoxOptions.setHeadless(true);
+		//WebDriver driver = new FirefoxDriver(firefoxOptions);
+		
+		//Via local
+		//driver.navigate().to("http://localhost:8001/tasks");
+		
+		//Via Docker
+		driver.navigate().to("http://192.168.15.6:8001/tasks");
+		
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		return driver;
 	}
 	
 	@Test
-	public void deveSalvarTarefaComSucesso() throws InterruptedException{
+	public void deveSalvarTarefaComSucesso() throws InterruptedException, MalformedURLException{
 		WebDriver driver = acessarAplicacao();
 		try{
 		driver.findElement(By.id("addTodo")).click();
@@ -49,7 +77,7 @@ public class TasksTest {
 	}
 	
 	@Test
-	public void naoDeveSalvarTarefaSemDescricao() throws InterruptedException{
+	public void naoDeveSalvarTarefaSemDescricao() throws InterruptedException, MalformedURLException{
 		WebDriver driver = acessarAplicacao();
 		try{
 		driver.findElement(By.id("addTodo")).click();
@@ -64,7 +92,7 @@ public class TasksTest {
 	}
 	
 	@Test
-	public void naoDeveSalvarTarefaSemData() throws InterruptedException{
+	public void naoDeveSalvarTarefaSemData() throws InterruptedException, MalformedURLException{
 		WebDriver driver = acessarAplicacao();
 		try{
 		driver.findElement(By.id("addTodo")).click();
@@ -79,7 +107,7 @@ public class TasksTest {
 	}
 	
 	@Test
-	public void naoDeveSalvarTarefaComDataPassada() throws InterruptedException{
+	public void naoDeveSalvarTarefaComDataPassada() throws InterruptedException, MalformedURLException{
 		WebDriver driver = acessarAplicacao();
 		try{
 		driver.findElement(By.id("addTodo")).click();
