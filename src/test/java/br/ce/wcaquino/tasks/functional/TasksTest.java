@@ -3,16 +3,15 @@ package br.ce.wcaquino.tasks.functional;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+//import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+//import org.openqa.selenium.firefox.FirefoxDriver;
+//import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -39,7 +38,7 @@ public class TasksTest {
 		cap.setPlatform(Platform.ANY);
 		ChromeOptions options = new ChromeOptions();
 		options.merge(cap);
-		options.setHeadless(true);
+		options.setHeadless(false);
 		
 		//Via local
 		//WebDriver driver = new RemoteWebDriver(new URL("http://192.168.15.6:4444/wd/hub"), cap/options);
@@ -54,7 +53,8 @@ public class TasksTest {
 		//driver.navigate().to("http://localhost:8001/tasks");
 		
 		//Via Docker
-		driver.navigate().to("http://192.168.15.6:8001/tasks");
+		//driver.navigate().to("http://192.168.15.3:8001/tasks");
+		driver.navigate().to("http://192.168.99.100:9999/tasks");
 		
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		return driver;
